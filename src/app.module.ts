@@ -5,7 +5,7 @@ import { Client, Pool } from 'pg';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { OutboxListener } from './outbox-listener.service';
-import { Publisher } from './publisher';
+import { Publisher } from './service/publisher';
 
 @Module({
     imports: [ConfigModule.forRoot({ isGlobal: true })],
