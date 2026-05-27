@@ -148,12 +148,11 @@ export class OutboxListener implements OnModuleInit, OnModuleDestroy {
         const claimedRecord = await this.claimReadyRecord(recordId);
 
         if (!claimedRecord) {
-            this.logger.debug(
-                `Skipped record [${recordId}] because it was already claimed`
-            );
+            this.logger.debug(`Claim skipped for record [${recordId}]`);
             return;
         }
 
+        this.logger.debug(`Claimed record [${recordId}] for publishing`);
         await this.publisher.publish(claimedRecord);
     }
 
@@ -206,7 +205,9 @@ export class OutboxListener implements OnModuleInit, OnModuleDestroy {
         }
 
         this.logger.warn(
-            `Requeued stale PROCESSING messages [${result.rowCount}]`
+            `Requeued stale PROCESSING messages [count=${result.rowCount}] [ids=${result.rows
+                .map(record => record.id)
+                .join(', ')}]`
         );
 
         for (const record of result.rows) {
@@ -235,7 +236,9 @@ export class OutboxListener implements OnModuleInit, OnModuleDestroy {
         }
 
         this.logger.warn(
-            `Requeued FAILED messages for retry [${result.rowCount}]`
+            `Requeued FAILED messages for retry [count=${result.rowCount}] [ids=${result.rows
+                .map(record => record.id)
+                .join(', ')}]`
         );
 
         for (const record of result.rows) {

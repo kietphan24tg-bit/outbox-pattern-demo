@@ -4,6 +4,7 @@ import { connect } from 'amqplib';
 import { Client, Pool } from 'pg';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { InfrastructureCleanupService } from './infrastructure-cleanup.service';
 import { OutboxListener } from './outbox-listener.service';
 import { Publisher } from './service/publisher';
 
@@ -12,6 +13,7 @@ import { Publisher } from './service/publisher';
     controllers: [AppController],
     providers: [
         AppService,
+        InfrastructureCleanupService,
         Publisher,
         OutboxListener,
         {
